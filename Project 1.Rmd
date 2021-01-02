@@ -1,0 +1,45 @@
+---
+title: "Project 1"
+author: "Granite Ogborn"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+A single monitor mean
+```{r}
+x001 <- read.csv("specdata/001.csv")
+mean001 <- mean(x001$nitrate, na.rm = TRUE)
+print(mean001)
+```
+
+Creating the pollutantmean function
+```{r}
+library(readr, plyr)
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+  l <- length(id)
+  results <- vector("list", l)
+  for(i in id){
+  xid <- sprintf("%03d", i)
+  #poprint(xid)
+  xpath <- paste0(directory,"/",xid,".csv", collapse = "")
+  #print(xpath)
+  x001 <- read.csv(xpath)
+  xmean <- mean(x001[[pollutant]], na.rm = TRUE)
+  #print(xmean)
+  results[[i]] <- xmean
+  }
+  #print(results)
+  output <- Reduce(c,results)
+  ans <- mean(output)
+  print(ans)
+}
+```
+
+
