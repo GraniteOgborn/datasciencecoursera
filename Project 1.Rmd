@@ -23,21 +23,16 @@ Creating the pollutantmean function
 ```{r}
 library(readr, plyr)
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-  l <- length(id)
-  results <- vector("list", l)
-  for(i in id){
-  xid <- sprintf("%03d", i)
-  #poprint(xid)
-  xpath <- paste0(directory,"/",xid,".csv", collapse = "")
+  mydata <- data.frame()
+  for (i in id) {
+  xid <- sprintf("%03d.csv", i)
+  #print(xid)
+  xpath <- paste0(directory,"/",xid)
   #print(xpath)
-  x001 <- read.csv(xpath)
-  xmean <- mean(x001[[pollutant]], na.rm = TRUE)
-  #print(xmean)
-  results[[i]] <- xmean
+  x001 <- read.csv(xpath, header = TRUE)
+  mydata <- rbind(mydata, x001)
   }
-  #print(results)
-  output <- Reduce(c,results)
-  ans <- mean(output)
+  ans <- mean(mydata[[pollutant]])
   print(ans)
 }
 ```
