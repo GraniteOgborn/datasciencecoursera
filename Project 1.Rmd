@@ -37,7 +37,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
 Part 2: The complete function
 ```{r}
 complete <- function(directory, id = 1:332) {
-nobs <- vector()
+  nobs <- vector()
   for (i in id) {
     xid <- sprintf("%03d.csv", i)
     xpath <- paste0(directory,"/",xid)
@@ -46,6 +46,28 @@ nobs <- vector()
     nobs <- rbind(nobs, c)
   }
   ans <- data.frame(id,nobs)
+  ans
+}
+```
+
+Part 3: The correlation function
+```{r}
+corr <- function(directory, threshold = 0) {
+  ans <-vector()
+  for (i in 1:332) {
+    xid <- sprintf("%03d.csv", i)
+    xpath <- paste0(directory,"/",xid)
+    xfile <- read.csv(xpath, header = TRUE)
+    if (sum(complete.cases(xfile)) > threshold){
+      cfile <- xfile[complete.cases(xfile),]
+      c <- cor(cfile$sulfate, cfile$nitrate)
+      ans <- rbind(ans, c)
+      id <- i
+    }
+    else {
+      next
+    }
+  }
   ans
 }
 ```
