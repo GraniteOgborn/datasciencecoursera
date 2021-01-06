@@ -53,7 +53,7 @@ complete <- function(directory, id = 1:332) {
 Part 3: The correlation function
 ```{r}
 corr <- function(directory, threshold = 0) {
-  ans <-vector()
+  ans <-numeric()
   for (i in 1:332) {
     xid <- sprintf("%03d.csv", i)
     xpath <- paste0(directory,"/",xid)
