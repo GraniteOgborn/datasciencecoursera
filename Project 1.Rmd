@@ -19,18 +19,33 @@ mean001 <- mean(x001$nitrate, na.rm = TRUE)
 print(mean001)
 ```
 
-Part 1: Creating the pollutantmean function
+Part 1: The pollutantmean function
 ```{r}
-library(readr, plyr)
 pollutantmean <- function(directory, pollutant, id = 1:332) {
   mydata <- data.frame()
   for (i in id) {
-  xid <- sprintf("%03d.csv", i)
-  xpath <- paste0(directory,"/",xid)
-  x001 <- read.csv(xpath, header = TRUE)
-  mydata <- rbind(mydata, x001)
+    xid <- sprintf("%03d.csv", i)
+    xpath <- paste0(directory,"/",xid)
+    xfile <- read.csv(xpath, header = TRUE)
+    mydata <- rbind(mydata, xfile)
   }
   ans <- mean(mydata[[pollutant]], na.rm = TRUE)
+  ans
+}
+```
+
+Part 2: The complete function
+```{r}
+complete <- function(directory, id = 1:332) {
+nobs <- vector()
+  for (i in id) {
+    xid <- sprintf("%03d.csv", i)
+    xpath <- paste0(directory,"/",xid)
+    xfile <- read.csv(xpath, header = TRUE)
+    c <- sum(complete.cases(xfile))
+    nobs <- rbind(nobs, c)
+  }
+  ans <- data.frame(id,nobs)
   ans
 }
 ```
